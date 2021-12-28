@@ -226,4 +226,19 @@ captcha是一个验证码的类库[原博](https://www.topgoer.com/gin%E6%A1%86%
 
 ## token验证
 jwt.go里封装了很多这样用于加密的轮子
+通常的设计思路是在login处签发token，返回给前端使用，而token的验证可以写一个中间件来实现    
+**是不是对于过期的验证是` jwt.ParseWithClaims`里完成，没完全看明白**   
+验证代码如下所示
+```go
+func ParseToken(tokenString string) (*jwt.Token, *Claims, error) {
+    Claims := &Claims{}
+    token, err := jwt.ParseWithClaims(tokenString, Claims, func(token *jwt.Token) (i interface{}, err error) {
+        return jwtkey, nil
+    })
+    return token, Claims, err
+}
+```
 
+## 权限控制
+用的是一个叫casbin的开源访问控制库，没有完全看懂。等做项目时集中学习。    
+[参考博客](https://www.topgoer.com/gin%E6%A1%86%E6%9E%B6/%E5%85%B6%E4%BB%96/%E6%9D%83%E9%99%90%E7%AE%A1%E7%90%86.html)
